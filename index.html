@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta property="og:title" content="Tulum Dec 16–20">
+<meta property="og:description" content="Sun, cenotes and one very old birthday boy. Tick what you're in for.">
+<meta property="og:image" content="/tulum-hero.png">
+<title>Tulum Trip Vote</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+<style>
+/* Layout: jungle-green hero, then a dated timeline. Each day is a card split into a sunlit Morning block and a dusk Evening block; votes sit inside the block they belong to. */
+:root{
+  --bg:#f3f7f4;
+  --surface:#ffffff;
+  --ink:#10251d;
+  --muted:#4f6a5f;
+  --line:#d4e2da;
+  --jungle:#123c2e;
+  --jungle-ink:#eaf6ef;
+  --cenote:#0b8f8a;
+  --cenote-soft:#d5f0ee;
+  --marigold:#e8a317;
+  --morning:#fdf5e1;
+  --evening:#e4ebf3;
+  --evening-ink:#2c3e58;
+  --bar:#e3ece7;
+  --display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body:"DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c1713;--surface:#13221c;--ink:#e6f1eb;--muted:#9ab3a8;--line:#26392f;
+  --jungle:#0a2a1f;--jungle-ink:#e6f4ec;--cenote:#3cc4bd;--cenote-soft:#123a37;
+  --marigold:#f2b84a;--morning:#2a2414;--evening:#161f2e;--evening-ink:#b9c8e0;--bar:#1d2f27;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1713;--surface:#13221c;--ink:#e6f1eb;--muted:#9ab3a8;--line:#26392f;
+  --jungle:#0a2a1f;--jungle-ink:#e6f4ec;--cenote:#3cc4bd;--cenote-soft:#123a37;
+  --marigold:#f2b84a;--morning:#2a2414;--evening:#161f2e;--evening-ink:#b9c8e0;--bar:#1d2f27;color-scheme:dark}
+
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:780px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+.hero{background-color:var(--jungle);background-image:linear-gradient(180deg,rgba(6,24,18,.2) 0%,rgba(6,24,18,.5) 55%,rgba(6,24,18,.85) 100%),url("tulum-hero.png");background-size:cover;background-position:center 40%;color:#f2faf5;padding-top:4.5rem;padding-bottom:2.5rem;position:relative;overflow:hidden;text-shadow:0 1px 12px rgba(0,0,0,.4)}
+.hero .fact{background:rgba(6,24,18,.35);backdrop-filter:blur(4px)}
+.eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;opacity:.8;font-weight:700}
+.hero h1{font-family:var(--display);font-weight:800;font-size:clamp(2.6rem,9vw,4.4rem);line-height:.95;margin:.4rem 0 .9rem;letter-spacing:-.02em;position:relative}
+.hero p{margin:0;max-width:36ch;opacity:.9;position:relative}
+.facts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.3rem;position:relative}
+.fact{border:1px solid rgba(242,250,245,.4);border-radius:999px;padding:.3rem .8rem;font-size:.85rem;font-variant-numeric:tabular-nums}
+
+.namebar{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.namebar .wrap{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;padding-block:.75rem}
+.namebar label{font-weight:700;font-size:.9rem}
+.namebar input{flex:1 1 180px;min-width:0;font:inherit;padding:.5rem .75rem;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+.namebar input:focus-visible{outline:none;border-color:var(--cenote)}
+.namebar input.need{border-color:var(--marigold);background:var(--morning)}
+.status{font-size:.82rem;color:var(--muted);min-width:7ch}
+.status.ok{color:var(--cenote)}
+.banner{margin:1rem 0 0;padding:.75rem 1rem;border-radius:12px;background:var(--morning);font-size:.92rem}
+
+main{padding-block:1.5rem 2rem;display:grid;gap:1.5rem}
+.day{display:grid;grid-template-columns:64px 1fr;gap:1rem;align-items:start}
+.date{text-align:center;font-variant-numeric:tabular-nums;position:sticky;top:calc(env(safe-area-inset-top,0px) + 72px)}
+.date .dow{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.date .num{font-family:var(--display);font-weight:800;font-size:2.1rem;line-height:1;margin-top:.15rem}
+.date .mon{font-size:.75rem;color:var(--muted)}
+.card{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.card-head{padding:1rem 1.15rem .9rem;border-bottom:1px solid var(--line)}
+.card-head h2{font-family:var(--display);font-weight:700;font-size:1.35rem;margin:0;line-height:1.2}
+.card-head p{margin:.2rem 0 0;color:var(--muted);font-size:.92rem}
+
+.slot{padding:1rem 1.15rem 1.15rem}
+.slot.am{background:var(--morning)}
+.slot.pm{background:var(--evening)}
+.slot + .slot{border-top:1px solid var(--line)}
+.slot-label{display:flex;align-items:center;gap:.45rem;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem}
+.slot.am .slot-label{color:color-mix(in srgb,var(--marigold) 75%,var(--ink))}
+.slot.pm .slot-label{color:var(--evening-ink)}
+.slot-label svg{width:16px;height:16px}
+.plan{margin:0;padding-left:1.1rem}
+.plan li{margin:.15rem 0}
+.q{font-weight:700;margin:.9rem 0 .15rem}
+.hint{color:var(--muted);font-size:.85rem;margin:0 0 .6rem}
+.vote-tag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.1rem .45rem;border-radius:6px;background:var(--cenote);color:var(--surface);margin-left:.4rem;vertical-align:2px}
+
+.opts{display:grid;gap:.55rem}
+.opts.two{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.opt{display:block;position:relative;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:.8rem .95rem;cursor:pointer;transition:border-color .15s,background .15s}
+.opt:hover{border-color:color-mix(in srgb,var(--cenote) 50%,var(--line))}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt:has(input:focus-visible){outline:3px solid var(--cenote);outline-offset:2px}
+.opt.sel{border-color:var(--cenote);background:var(--cenote-soft)}
+.opt-top{display:flex;gap:.75rem;align-items:flex-start;justify-content:space-between}
+.opt-name{font-weight:700;display:flex;align-items:flex-start;gap:.55rem}
+.opt-count{font-variant-numeric:tabular-nums;font-weight:700;color:var(--cenote);white-space:nowrap;font-size:.9rem}
+.opt-desc{color:var(--muted);font-size:.9rem;margin:.2rem 0 .5rem 1.85rem}
+.meta{display:flex;flex-wrap:wrap;gap:.35rem;margin:0 0 .55rem 1.85rem}
+.meta span{font-size:.74rem;border:1px solid var(--line);border-radius:999px;padding:.05rem .55rem;color:var(--muted);background:var(--bg)}
+.track{height:6px;background:var(--bar);border-radius:3px;overflow:hidden;margin-left:1.85rem}
+.fill{height:100%;background:var(--cenote);border-radius:3px;transition:width .4s ease}
+.voters{display:flex;flex-wrap:wrap;gap:.3rem;margin:.5rem 0 0 1.85rem}
+.chip{font-size:.74rem;padding:.08rem .5rem;border-radius:999px;background:var(--bg);border:1px solid var(--line)}
+.chip.me{border-color:var(--cenote);color:var(--cenote);font-weight:700}
+
+.box{flex:none;display:inline-grid;place-items:center;width:20px;height:20px;border:2px solid var(--line);border-radius:6px;margin-top:.12rem;background:var(--surface)}
+.radio .box{border-radius:50%}
+.opt.sel .box{background:var(--cenote);border-color:var(--cenote)}
+.opt.sel .box::after{content:"";width:9px;height:5px;border:2.5px solid var(--surface);border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.radio.sel .box::after{width:8px;height:8px;border:0;border-radius:50%;background:var(--surface);transform:none}
+
+.feature{border-radius:14px;padding:.85rem 1rem;background:var(--surface);border:1px solid var(--line);margin-top:.6rem}
+.feature h3{font-family:var(--display);margin:0 0 .15rem;font-size:1.08rem}
+.feature p{margin:0;font-size:.9rem;color:var(--muted)}
+
+.card.urgent{border:2px solid var(--marigold)}
+.card.urgent .card-head{background:var(--morning)}
+.date.decide .num{font-size:1.15rem;margin-top:.3rem}
+main{padding-bottom:3rem}
+.sugg-form{display:grid;grid-template-columns:1fr auto;gap:.5rem;margin-top:.25rem}
+.sugg-form select,.sugg-form input{font:inherit;padding:.55rem .7rem;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);min-width:0}
+.sugg-form select:focus-visible,.sugg-form input:focus-visible{outline:none;border-color:var(--cenote)}
+.sugg-form button{font:inherit;font-weight:700;padding:.55rem 1rem;border:0;border-radius:10px;background:var(--cenote);color:var(--surface);cursor:pointer}
+.sugg-form button:disabled{opacity:.5;cursor:default}
+.sugg-form button:focus-visible{outline:3px solid var(--cenote);outline-offset:2px}
+.sugg-list{list-style:none;margin:1rem 0 0;padding:0;display:grid;gap:.5rem}
+.sugg{display:flex;gap:.6rem;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:.65rem .8rem}
+.sugg .cat{flex:none;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.15rem .45rem;border-radius:6px;background:var(--cenote-soft);color:var(--ink);margin-top:.15rem}
+.sugg .txt{flex:1;min-width:0;overflow-wrap:anywhere}
+.sugg .by{display:block;font-size:.8rem;color:var(--muted)}
+.sugg .rm{flex:none;font:inherit;font-size:.8rem;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:8px;padding:.15rem .5rem;cursor:pointer}
+.sugg-empty{color:var(--muted);font-size:.9rem;margin:.9rem 0 0}
+@media (max-width:520px){
+  .day{grid-template-columns:1fr;gap:.5rem}
+  .date{position:static;display:flex;gap:.5rem;align-items:baseline;text-align:left}
+  .date .num{font-size:1.4rem;margin:0}
+  .opt-desc,.meta,.track,.voters{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){.fill,.opt{transition:none}}
+</style>
+</head>
+<body>
+
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Quintana Roo, Mexico</div>
+    <h1>Tulum<br>Dec 16–20</h1>
+    <p>Sun, cenotes and one very old birthday boy. Tick what you're in for.</p>
+    <div class="facts">
+      <span class="fact">~10 people</span>
+      <span class="fact">4 nights</span>
+      <span class="fact" id="voterFact">Loading votes…</span>
+    </div>
+  </div>
+</header>
+
+<div class="namebar">
+  <div class="wrap">
+    <label for="nick">Your name</label>
+    <input id="nick" type="text" maxlength="30" placeholder="So the group knows who voted" autocomplete="nickname">
+    <span class="status" id="status" aria-live="polite"></span>
+  </div>
+</div>
+
+<main class="wrap" id="days">
+  <div class="banner" id="banner" hidden></div>
+</main>
+
+
+<script>
+const SUN = '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3.2" fill="currentColor"/><g stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 1v1.6M8 13.4V15M1 8h1.6M13.4 8H15M3 3l1.1 1.1M11.9 11.9 13 13M3 13l1.1-1.1M11.9 4.1 13 3"/></g></svg>';
+const MOON = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10.8 1.6A6.5 6.5 0 1 0 14.4 11 5.4 5.4 0 0 1 10.8 1.6z" fill="currentColor"/></svg>';
+
+// Vote groups. multi: tick as many as you like.
+const GROUPS = {
+  breakfast: {multi:false, layout:"two", compact:true, opts:[
+    {id:"all", name:"Yes, every morning", desc:"Thu, Fri, Sat and Sun."},
+    {id:"some", name:"Only some mornings", desc:"We pick the days."},
+    {id:"none", name:"No, skip it", desc:"We'll sort breakfast ourselves."}
+  ]},
+  wed_pm: {multi:true, layout:"two", compact:true, opts:[
+    {id:"orderin", name:"Order in to the Airbnb"},
+    {id:"out", name:"Dinner at a restaurant"}
+  ]},
+  thu_am: {multi:true, opts:[
+    {id:"buutsha", name:"Buuts'Ha Cenote Day Club", desc:"Day party built around a jungle cenote: DJs, drinks, swimming and a jump platform.", meta:["10–15 min drive","Party vibe","Day pass ~MXN 500–900"]},
+    {id:"xcaret", name:"Xcaret Park", desc:"Eco-adventure park with underground rivers, wildlife and an evening show.", meta:["~1 hr drive north","Full day","~$180 pp (Xcaret Plus, incl. lunch)"]},
+    {id:"yacht", name:"Rent a yacht with snorkelling", desc:"Private boat for the group, with snorkel stops along the coast.", meta:["Private for the group","~$1,200 total"]},
+    {id:"atv", name:"Cenotes + ATV + zipline", desc:"Adventure combo through the jungle with cenote swims between rides.", meta:["Tour pickup","Half to full day","~$100"]},
+    {id:"siankaan", name:"Sian Ka'an lagoons + Tulum ruins", desc:"Clifftop Maya ruins at opening, then a boat through the biosphere: dolphins, lagoons and a float down ancient Maya canals.", meta:["~30 min south","Full day","~$200"]}
+  ]},
+  thu_pm: {multi:true, layout:"two", compact:true, opts:[
+    {id:"airbnb", name:"Dinner at the Airbnb"},
+    {id:"beach", name:"Dinner out in the beach zone"}
+  ]}
+};
+
+const DAYS = [
+  {dow:"Decide", num:"First", mon:"", title:"Breakfast at the Airbnb", sub:"Private chef, $30 per person. We need to confirm this early.",
+   any:{vote:{g:"breakfast", q:"Should we book it for all days?", hint:"Pick one."}}},
+  {dow:"Wed", num:"16", title:"Arrival", sub:"Easy evening. Save energy.",
+   am:{plan:["Travel day: flights and transfer to Tulum"]},
+   pm:{plan:["Reach the Airbnb around 7:30 PM","Light drinks"], vote:{g:"wed_pm", q:"Dinner tonight?"}}},
+  {dow:"Thu", num:"17", title:"Day out", sub:"Pick every activity you'd be up for.",
+   am:{vote:{g:"thu_am", q:"Daytime activity"}},
+   pm:{vote:{g:"thu_pm", q:"Dinner tonight?"}}},
+  {dow:"Fri", num:"18", title:"Pool day and party", sub:"",
+   am:{plan:["Yoga class at the Airbnb","Brunch","Pool time and pickleball"]},
+   pm:{feature:{h:"Party", p:"Option: Gitano. A table is about $1,500 and includes food and drinks."}}},
+  {dow:"Sat", num:"19", title:"Beach club and Airbnb party", sub:"",
+   am:{plan:["Beach club day"]},
+   pm:{feature:{h:"Private Airbnb party", p:"Private bartender, Mexican dinner, drinks, and music. Can also head out later."}}},
+  {dow:"Sun", num:"20", title:"Departure", sub:"Leave plenty of buffer for flights.",
+   am:{plan:["Breakfast at the Airbnb","Checkout and head to the airport"]}}
+];
+
+const S = {token:null, myId:null, votes:new Map(), names:{}, mine:blankMine(), canVote:false, loaded:false};
+const $ = id => document.getElementById(id);
+function blankMine(){ const m={nick:"",suggestions:[]}; for(const g in GROUPS) m[g]=GROUPS[g].multi?[]:null; return m; }
+function normalize(v){
+  const m=blankMine(); if(!v) return m;
+  m.nick = typeof v.nick==="string"?v.nick:"";
+  for (const g in GROUPS){
+    const val=v[g];
+    if (GROUPS[g].multi) m[g]=Array.isArray(val)?val.filter(x=>typeof x==="string"):(typeof val==="string"?[val]:[]);
+    else m[g]=typeof val==="string"?val:null;
+  }
+  m.suggestions = Array.isArray(v.suggestions) ? v.suggestions.filter(x=>x&&typeof x.text==="string").map(x=>({id:String(x.id||""),text:x.text.slice(0,200),at:typeof x.at==="string"?x.at:""})) : [];
+  return m;
+}
+function setStatus(t, ok){ const el=$("status"); el.textContent=t; el.classList.toggle("ok",!!ok); }
+function banner(t){ const b=$("banner"); if(!t){b.hidden=true;b.textContent="";return;} b.textContent=t; b.hidden=false; }
+function voterLabel(id){ const v=S.votes.get(id); return (v&&v.nick) || S.names[id] || "Someone"; }
+function el(tag, cls, text){ const e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
+
+function tally(g, optId){
+  const ids=[];
+  S.votes.forEach((v,id)=>{ const val=v[g]; if (Array.isArray(val)?val.includes(optId):val===optId) ids.push(id); });
+  return ids;
+}
+
+function optCard(g, o){
+  const G=GROUPS[g];
+  const ids=tally(g,o.id);
+  const max=Math.max(1, ...G.opts.map(x=>tally(g,x.id).length));
+  const selected = G.multi ? S.mine[g].includes(o.id) : S.mine[g]===o.id;
+  const lab=el("label","opt"+(G.multi?"":" radio")+(selected?" sel":""));
+  const input=document.createElement("input");
+  input.type=G.multi?"checkbox":"radio"; input.name=g; input.id=g+"-"+o.id; input.value=o.id;
+  input.checked=selected; input.disabled=!S.canVote;
+  input.addEventListener("change",()=>choose(g,o.id));
+  lab.appendChild(input);
+  const top=el("div","opt-top");
+  const nm=el("span","opt-name"); nm.appendChild(el("span","box")); nm.appendChild(el("span",null,o.name));
+  top.append(nm, el("span","opt-count", ids.length?(ids.length+(ids.length===1?" vote":" votes")):""));
+  lab.appendChild(top);
+  if (o.desc) lab.appendChild(el("p","opt-desc",o.desc));
+  if (o.meta){ const m=el("div","meta"); o.meta.forEach(t=>m.appendChild(el("span",null,t))); lab.appendChild(m); }
+  if (!G.compact && o.desc){
+    const tr=el("div","track"); const f=el("div","fill"); f.style.width=(ids.length/max*100)+"%"; tr.appendChild(f); lab.appendChild(tr);
+  }
+  if (ids.length){
+    const vs=el("div","voters");
+    ids.forEach(id=>vs.appendChild(el("span","chip"+(id===S.myId?" me":""), id===S.myId?"You":voterLabel(id))));
+    lab.appendChild(vs);
+  }
+  return lab;
+}
+
+function slot(kind, data){
+  const s=el("section","slot "+(kind==="am"?"am":kind==="pm"?"pm":""));
+  if (kind!=="any"){
+    const lbl=el("div","slot-label"); lbl.innerHTML=kind==="am"?SUN:MOON; lbl.appendChild(document.createTextNode(kind==="am"?"Morning & day":"Evening"));
+    s.appendChild(lbl);
+  }
+  if (data.plan){ const ul=el("ul","plan"); data.plan.forEach(t=>ul.appendChild(el("li",null,t))); s.appendChild(ul); }
+  if (data.feature){ const f=el("div","feature"); f.append(el("h3",null,data.feature.h), el("p",null,data.feature.p)); s.appendChild(f); }
+  if (data.vote){
+    const G=GROUPS[data.vote.g];
+    if (data.vote.q){ const q=el("p","q",data.vote.q); q.appendChild(el("span","vote-tag","Vote")); s.appendChild(q); }
+    s.appendChild(el("p","hint", data.vote.hint || "Tick as many as you like."));
+    const box=el("div","opts"+(G.layout==="two"?" two":""));
+    box.dataset.group=data.vote.g;
+    box.setAttribute("role","group");
+    s.appendChild(box);
+  }
+  return s;
+}
+
+function buildDays(){
+  const main=$("days");
+  DAYS.forEach(d=>{
+    const day=el("article","day");
+    const date=el("div","date"+(d.mon===""?" decide":"")); date.append(el("div","dow",d.dow), el("div","num",d.num), el("div","mon",d.mon===undefined?"Dec":d.mon));
+    const card=el("div","card"+(d.mon===""?" urgent":""));
+    const head=el("header","card-head"); head.appendChild(el("h2",null,d.title)); if(d.sub) head.appendChild(el("p",null,d.sub)); card.appendChild(head);
+    if (d.am) card.appendChild(slot("am",d.am));
+    if (d.pm) card.appendChild(slot("pm",d.pm));
+    if (d.any) card.appendChild(slot("any",d.any));
+    day.append(date, card); main.appendChild(day);
+  });
+}
+
+function buildSuggest(){
+  const day=el("article","day");
+  const date=el("div","date decide"); date.append(el("div","dow","Your"), el("div","num","Ideas"), el("div","mon",""));
+  const card=el("div","card");
+  const head=el("header","card-head"); head.append(el("h2",null,"Got other ideas?"), el("p",null,"Restaurants, bars, parties, anything. Drop it here for the group."));
+  const slot=el("section","slot");
+  const form=el("form","sugg-form"); form.id="suggForm";
+  const inp=document.createElement("input"); inp.id="suggText"; inp.type="text"; inp.maxLength=200; inp.placeholder="Restaurants, bars, parties, anything…"; inp.setAttribute("aria-label","Your suggestion");
+  const btn=el("button",null,"Add"); btn.type="submit"; btn.id="suggBtn";
+  form.append(inp,btn);
+  form.addEventListener("submit",e=>{
+    e.preventDefault();
+    const t=inp.value.trim(); if(!t||!S.canVote) return;
+    S.mine.suggestions=[...S.mine.suggestions,{id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),text:t.slice(0,200),at:new Date().toISOString()}];
+    inp.value="";
+    if (S.myId) S.votes.set(S.myId,{...S.mine});
+    render(); scheduleSave(100);
+  });
+  const list=el("ul","sugg-list"); list.id="suggList";
+  slot.append(form,list);
+  card.append(head,slot); day.append(date,card); $("days").appendChild(day);
+}
+
+function renderSuggest(){
+  const all=[];
+  S.votes.forEach((v,uid)=>(v.suggestions||[]).forEach(x=>all.push({...x,uid})));
+  all.sort((a,b)=>(b.at||"").localeCompare(a.at||""));
+  const list=$("suggList");
+  const kids=all.map(x=>{
+    const li=el("li","sugg");
+    const t=el("span","txt",x.text); t.appendChild(el("span","by",x.uid===S.myId?"You":voterLabel(x.uid))); li.appendChild(t);
+    if (x.uid===S.myId && S.canVote){
+      const rm=el("button","rm","Remove"); rm.type="button"; rm.setAttribute("aria-label","Remove your suggestion");
+      rm.addEventListener("click",()=>{ S.mine.suggestions=S.mine.suggestions.filter(y=>y.id!==x.id); S.votes.set(S.myId,{...S.mine}); render(); scheduleSave(100); });
+      li.appendChild(rm);
+    }
+    return li;
+  });
+  list.replaceChildren(...kids);
+  let empty=$("suggEmpty");
+  if (!all.length){ if(!empty){ empty=el("p","sugg-empty","No suggestions yet. Be the first."); empty.id="suggEmpty"; list.after(empty);} }
+  else if (empty) empty.remove();
+  ["suggText","suggBtn"].forEach(id=>$(id).disabled=!S.canVote);
+}
+
+function render(){
+  renderSuggest();
+  document.querySelectorAll(".opts[data-group]").forEach(box=>{
+    const g=box.dataset.group; box.replaceChildren(...GROUPS[g].opts.map(o=>optCard(g,o)));
+  });
+  const n=S.votes.size;
+  $("voterFact").textContent = !S.loaded ? "Loading votes…" : (n===0?"No votes yet":n+(n===1?" person has voted":" people have voted"));
+}
+
+let writing=false, pending=false, timer=null;
+function scheduleSave(delay){ if(!S.canVote) return; clearTimeout(timer); setStatus("Saving…"); timer=setTimeout(flush,delay); }
+async function flush(){
+  timer=null;
+  if (writing){ pending=true; return; }
+  writing=true;
+  try{
+    const r=await fetch("/api/votes",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({token:S.token,data:S.mine})});
+    if(!r.ok) throw new Error("save failed "+r.status);
+    setStatus("Saved",true); if($("banner").textContent.startsWith("Your vote didn't")) banner("");
+  }catch(e){
+    setStatus("");
+    banner("Your vote didn't save. Check your connection and tap your choice again.");
+  }finally{
+    writing=false; if(pending){pending=false; flush();}
+  }
+}
+
+function choose(g, id){
+  const G=GROUPS[g];
+  if (G.multi){ const set=new Set(S.mine[g]); set.has(id)?set.delete(id):set.add(id); S.mine[g]=[...set]; }
+  else S.mine[g]=id;
+  if (S.myId) S.votes.set(S.myId,{...S.mine});
+  render(); scheduleSave(300); nudgeName();
+}
+function nudgeName(){
+  if (S.mine.nick) return;
+  const n=$("nick"); n.classList.add("need"); n.placeholder="Add your name so the group knows it's you";
+}
+
+$("nick").addEventListener("input", e=>{
+  S.mine.nick=e.target.value.trim().slice(0,30);
+  $("nick").classList.remove("need");
+  if (S.myId){ S.votes.set(S.myId,{...S.mine}); render(); scheduleSave(900); }
+});
+
+buildDays(); buildSuggest(); render();
+
+function readOnly(msg){ S.loaded=true; render(); banner(msg); }
+
+function getToken(){
+  let t=null;
+  try{ t=localStorage.getItem("tulum_token"); }catch(e){}
+  if(!t || !/^[a-f0-9]{32}$/.test(t)){
+    const a=new Uint8Array(16); crypto.getRandomValues(a);
+    t=[...a].map(b=>b.toString(16).padStart(2,"0")).join("");
+    try{ localStorage.setItem("tulum_token",t); }catch(e){}
+  }
+  return t;
+}
+async function sha(t){
+  const buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("").slice(0,24);
+}
+
+let first=true;
+async function load(){
+  try{
+    const r=await fetch("/api/votes",{cache:"no-store"});
+    if(!r.ok) throw new Error(r.status);
+    const j=await r.json();
+    const next=new Map();
+    Object.entries(j.votes||{}).forEach(([id,v])=>next.set(id,normalize(v)));
+    if ((writing||timer) && S.votes.has(S.myId)) next.set(S.myId,S.votes.get(S.myId));
+    S.votes=next; S.loaded=true;
+    if (first){
+      first=false;
+      if (next.has(S.myId)){ S.mine=normalize(next.get(S.myId)); $("nick").value=S.mine.nick; }
+    }
+    if($("banner").textContent.startsWith("Votes can't")) banner("");
+    render();
+  }catch(e){
+    S.loaded=true; render();
+    banner("Votes can't be reached right now. They'll appear when the connection comes back.");
+  }
+}
+
+(async function init(){
+  S.token=getToken();
+  S.myId=await sha(S.token);
+  S.canVote=true; render();
+  await load();
+  setInterval(()=>{ if(document.visibilityState==="visible") load(); },5000);
+  document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible") load(); });
+})();
+</script>
+
+</body>
+</html>
