@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta property="og:title" content="Tulum Dec 16–20">
-<meta property="og:description" content="Sun, cenotes and one very old birthday boy. Tick what you're in for.">
+<meta property="og:description" content="Sun, cenotes and one very old birthday boy. Cast your votes below.">
 <meta property="og:image" content="/tulum-hero.png">
 <title>Tulum Trip Vote</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
 <style>
-/* Layout: jungle-green hero, then a dated timeline. Each day is a card split into a sunlit Morning block and a dusk Evening block; votes sit inside the block they belong to. */
+/* Layout: photo hero, a sticky tab bar (Itinerary / Flights / Airbnb), then one view at a time. Itinerary days are cards split into Morning and Evening blocks. */
 :root{
   --bg:#f3f7f4;
   --surface:#ffffff;
@@ -39,36 +39,48 @@
   --marigold:#f2b84a;--morning:#2a2414;--evening:#161f2e;--evening-ink:#b9c8e0;--bar:#1d2f27;color-scheme:dark}
 
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{color-scheme:light}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
 .wrap{max-width:780px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:var(--cenote)}
 
-.hero{background-color:var(--jungle);background-image:linear-gradient(180deg,rgba(6,24,18,.2) 0%,rgba(6,24,18,.5) 55%,rgba(6,24,18,.85) 100%),url("tulum-hero.png");background-size:cover;background-position:center 40%;color:#f2faf5;padding-top:4.5rem;padding-bottom:2.5rem;position:relative;overflow:hidden;text-shadow:0 1px 12px rgba(0,0,0,.4)}
-.hero .fact{background:rgba(6,24,18,.35);backdrop-filter:blur(4px)}
+.hero{background-color:var(--jungle);background-image:linear-gradient(180deg,rgba(6,24,18,.2) 0%,rgba(6,24,18,.5) 55%,rgba(6,24,18,.85) 100%),url("tulum-hero.png");background-size:cover;background-position:center 40%;color:#f2faf5;padding-top:4.5rem;padding-bottom:2.25rem;position:relative;overflow:hidden;text-shadow:0 1px 12px rgba(0,0,0,.4)}
 .eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;opacity:.8;font-weight:700}
-.hero h1{font-family:var(--display);font-weight:800;font-size:clamp(2.6rem,9vw,4.4rem);line-height:.95;margin:.4rem 0 .9rem;letter-spacing:-.02em;position:relative}
-.hero p{margin:0;max-width:36ch;opacity:.9;position:relative}
-.facts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.3rem;position:relative}
-.fact{border:1px solid rgba(242,250,245,.4);border-radius:999px;padding:.3rem .8rem;font-size:.85rem;font-variant-numeric:tabular-nums}
+.hero h1{font-family:var(--display);font-weight:800;font-size:clamp(2.6rem,9vw,4.4rem);line-height:.95;margin:.4rem 0 .9rem;letter-spacing:-.02em}
+.hero p{margin:0;max-width:36ch;opacity:.92}
 
-.namebar{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.topbar{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
-.namebar .wrap{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;padding-block:.75rem}
-.namebar label{font-weight:700;font-size:.9rem}
-.namebar input{flex:1 1 180px;min-width:0;font:inherit;padding:.5rem .75rem;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
-.namebar input:focus-visible{outline:none;border-color:var(--cenote)}
-.namebar input.need{border-color:var(--marigold);background:var(--morning)}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;padding-block:.7rem}
+.tab{display:flex;align-items:center;justify-content:center;gap:.55rem;font:inherit;font-weight:700;font-size:1.02rem;color:var(--ink);text-decoration:none;padding:.8rem .6rem;border:1.5px solid var(--line);border-radius:14px;background:var(--bg);text-align:center;line-height:1.2;transition:background .15s,border-color .15s,color .15s}
+.tab svg{flex:none;width:22px;height:22px;color:var(--cenote)}
+.tab:hover{border-color:var(--cenote)}
+.tab[aria-current="page"]{background:var(--cenote);border-color:var(--cenote);color:var(--surface);box-shadow:0 4px 14px color-mix(in srgb,var(--cenote) 30%,transparent)}
+.tab[aria-current="page"] svg{color:var(--surface)}
+.tab:focus-visible{outline:3px solid var(--cenote);outline-offset:2px}
+@media (max-width:520px){.tab{flex-direction:column;gap:.3rem;font-size:.88rem;padding:.65rem .4rem}}
+.namerow{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;padding-block:.65rem;border-top:1px solid var(--line)}
+.namerow label{font-weight:700;font-size:.9rem}
+.namerow input{flex:1 1 180px;min-width:0;font:inherit;padding:.5rem .75rem;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+.namerow input:focus-visible{outline:none;border-color:var(--cenote)}
+.namerow input.need{border-color:var(--marigold);background:var(--morning)}
 .status{font-size:.82rem;color:var(--muted);min-width:7ch}
 .status.ok{color:var(--cenote)}
-.banner{margin:1rem 0 0;padding:.75rem 1rem;border-radius:12px;background:var(--morning);font-size:.92rem}
+.banner{padding:.75rem 1rem;border-radius:12px;background:var(--morning);font-size:.92rem}
+.lock-note{padding:.75rem 1rem;border-radius:12px;border:1.5px dashed var(--marigold);background:var(--morning);font-size:.92rem;font-weight:500}
 
-main{padding-block:1.5rem 2rem;display:grid;gap:1.5rem}
+main{padding-block:1.5rem 3rem}
+.view{display:grid;gap:1.5rem}
 .day{display:grid;grid-template-columns:64px 1fr;gap:1rem;align-items:start}
-.date{text-align:center;font-variant-numeric:tabular-nums;position:sticky;top:calc(env(safe-area-inset-top,0px) + 72px)}
+.date{text-align:center;font-variant-numeric:tabular-nums}
 .date .dow{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
 .date .num{font-family:var(--display);font-weight:800;font-size:2.1rem;line-height:1;margin-top:.15rem}
 .date .mon{font-size:.75rem;color:var(--muted)}
+.date.decide .num{font-size:1.15rem;margin-top:.3rem}
 .card{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.card.urgent{border:2px solid var(--marigold)}
+.card.urgent .card-head{background:var(--morning)}
 .card-head{padding:1rem 1.15rem .9rem;border-bottom:1px solid var(--line)}
 .card-head h2{font-family:var(--display);font-weight:700;font-size:1.35rem;margin:0;line-height:1.2}
 .card-head p{margin:.2rem 0 0;color:var(--muted);font-size:.92rem}
@@ -88,9 +100,12 @@ main{padding-block:1.5rem 2rem;display:grid;gap:1.5rem}
 .vote-tag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.1rem .45rem;border-radius:6px;background:var(--cenote);color:var(--surface);margin-left:.4rem;vertical-align:2px}
 
 .opts{display:grid;gap:.55rem}
-.opts.two{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.opts.two{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
 .opt{display:block;position:relative;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:.8rem .95rem;cursor:pointer;transition:border-color .15s,background .15s}
 .opt:hover{border-color:color-mix(in srgb,var(--cenote) 50%,var(--line))}
+.opt.locked{cursor:not-allowed}
+.opt.locked:hover{border-color:var(--line)}
+.opt.locked .box{opacity:.45}
 .opt input{position:absolute;opacity:0;pointer-events:none}
 .opt:has(input:focus-visible){outline:3px solid var(--cenote);outline-offset:2px}
 .opt.sel{border-color:var(--cenote);background:var(--cenote-soft)}
@@ -105,41 +120,64 @@ main{padding-block:1.5rem 2rem;display:grid;gap:1.5rem}
 .voters{display:flex;flex-wrap:wrap;gap:.3rem;margin:.5rem 0 0 1.85rem}
 .chip{font-size:.74rem;padding:.08rem .5rem;border-radius:999px;background:var(--bg);border:1px solid var(--line)}
 .chip.me{border-color:var(--cenote);color:var(--cenote);font-weight:700}
-
 .box{flex:none;display:inline-grid;place-items:center;width:20px;height:20px;border:2px solid var(--line);border-radius:6px;margin-top:.12rem;background:var(--surface)}
 .radio .box{border-radius:50%}
 .opt.sel .box{background:var(--cenote);border-color:var(--cenote)}
 .opt.sel .box::after{content:"";width:9px;height:5px;border:2.5px solid var(--surface);border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
 .radio.sel .box::after{width:8px;height:8px;border:0;border-radius:50%;background:var(--surface);transform:none}
+.other-in{margin-top:.55rem;display:flex}
+.other-in input{flex:1;min-width:0;font:inherit;padding:.55rem .75rem;border:1.5px solid var(--cenote);border-radius:10px;background:var(--surface);color:var(--ink)}
+.other-in input:focus-visible{outline:none;box-shadow:0 0 0 3px var(--cenote-soft)}
 
 .feature{border-radius:14px;padding:.85rem 1rem;background:var(--surface);border:1px solid var(--line);margin-top:.6rem}
 .feature h3{font-family:var(--display);margin:0 0 .15rem;font-size:1.08rem}
 .feature p{margin:0;font-size:.9rem;color:var(--muted)}
 
-.card.urgent{border:2px solid var(--marigold)}
-.card.urgent .card-head{background:var(--morning)}
-.date.decide .num{font-size:1.15rem;margin-top:.3rem}
-main{padding-bottom:3rem}
 .sugg-form{display:grid;grid-template-columns:1fr auto;gap:.5rem;margin-top:.25rem}
-.sugg-form select,.sugg-form input{font:inherit;padding:.55rem .7rem;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);min-width:0}
-.sugg-form select:focus-visible,.sugg-form input:focus-visible{outline:none;border-color:var(--cenote)}
+.sugg-form input{font:inherit;padding:.55rem .7rem;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);min-width:0}
+.sugg-form input:focus-visible{outline:none;border-color:var(--cenote)}
 .sugg-form button{font:inherit;font-weight:700;padding:.55rem 1rem;border:0;border-radius:10px;background:var(--cenote);color:var(--surface);cursor:pointer}
 .sugg-form button:disabled{opacity:.5;cursor:default}
 .sugg-form button:focus-visible{outline:3px solid var(--cenote);outline-offset:2px}
 .sugg-list{list-style:none;margin:1rem 0 0;padding:0;display:grid;gap:.5rem}
 .sugg{display:flex;gap:.6rem;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:.65rem .8rem}
-.sugg .cat{flex:none;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.15rem .45rem;border-radius:6px;background:var(--cenote-soft);color:var(--ink);margin-top:.15rem}
 .sugg .txt{flex:1;min-width:0;overflow-wrap:anywhere}
 .sugg .by{display:block;font-size:.8rem;color:var(--muted)}
 .sugg .rm{flex:none;font:inherit;font-size:.8rem;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:8px;padding:.15rem .5rem;cursor:pointer}
 .sugg-empty{color:var(--muted);font-size:.9rem;margin:.9rem 0 0}
+
+.section-head h2{font-family:var(--display);font-weight:700;font-size:1.6rem;margin:0}
+.section-head p{margin:.25rem 0 0;color:var(--muted)}
+.table-wrap{overflow-x:auto}
+table.flights{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.flights th{text-align:left;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:.75rem 1.15rem;border-bottom:1px solid var(--line);white-space:nowrap}
+.flights td{padding:.8rem 1.15rem;border-bottom:1px solid var(--line);vertical-align:top}
+.flights tr:last-child td{border-bottom:0}
+.flights td:first-child{font-weight:700}
+.flights .when{white-space:nowrap}
+.flights .when small{display:block;color:var(--muted);font-size:.8rem}
+.pill{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.1rem .45rem;border-radius:6px;background:var(--morning);color:var(--ink);margin-left:.35rem;vertical-align:1px}
+
+.links{display:grid;gap:.75rem}
+.link-card{display:flex;gap:1rem;align-items:center;text-decoration:none;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:1rem 1.15rem;transition:border-color .15s}
+.link-card:hover{border-color:var(--cenote)}
+.link-card:focus-visible{outline:3px solid var(--cenote);outline-offset:2px}
+.link-ic{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--cenote-soft);color:var(--cenote)}
+.link-ic svg{width:22px;height:22px}
+.link-txt{flex:1;min-width:0}
+.link-txt strong{display:block;font-size:1.02rem}
+.link-txt span{display:block;color:var(--muted);font-size:.88rem;overflow-wrap:anywhere}
+.arrow{flex:none;color:var(--muted);font-size:1.2rem}
+
 @media (max-width:520px){
   .day{grid-template-columns:1fr;gap:.5rem}
-  .date{position:static;display:flex;gap:.5rem;align-items:baseline;text-align:left}
+  .date{display:flex;gap:.5rem;align-items:baseline;text-align:left}
   .date .num{font-size:1.4rem;margin:0}
+  .date.decide .num{margin:0}
   .opt-desc,.meta,.track,.voters{margin-left:0}
+  .flights th,.flights td{padding-left:.85rem;padding-right:.85rem}
 }
-@media (prefers-reduced-motion:reduce){.fill,.opt{transition:none}}
+@media (prefers-reduced-motion:reduce){.fill,.opt,.link-card{transition:none}}
 </style>
 </head>
 <body>
@@ -149,81 +187,131 @@ main{padding-bottom:3rem}
   <div class="wrap">
     <div class="eyebrow">Quintana Roo, Mexico</div>
     <h1>Tulum<br>Dec 16–20</h1>
-    <p>Sun, cenotes and one very old birthday boy. Tick what you're in for.</p>
-    <div class="facts">
-      <span class="fact">~10 people</span>
-      <span class="fact">4 nights</span>
-      <span class="fact" id="voterFact">Loading votes…</span>
-    </div>
+    <p>Sun, cenotes and one very old birthday boy. Cast your votes below.</p>
   </div>
 </header>
 
-<div class="namebar">
-  <div class="wrap">
+<div class="topbar">
+  <nav class="wrap tabs" aria-label="Trip sections">
+    <a class="tab" href="#itinerary" data-view="itinerary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>Itinerary &amp; Votes</a>
+    <a class="tab" href="#flights" data-view="flights"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>Flight Info</a>
+    <a class="tab" href="#airbnb" data-view="airbnb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg>Airbnb Info</a>
+  </nav>
+  <div class="wrap namerow" id="namerow">
     <label for="nick">Your name</label>
-    <input id="nick" type="text" maxlength="30" placeholder="So the group knows who voted" autocomplete="nickname">
+    <input id="nick" type="text" maxlength="30" placeholder="Type your name to start voting" autocomplete="nickname">
     <span class="status" id="status" aria-live="polite"></span>
   </div>
 </div>
 
-<main class="wrap" id="days">
-  <div class="banner" id="banner" hidden></div>
-</main>
+<main class="wrap">
+  <section class="view" id="view-itinerary">
+    <div class="banner" id="banner" hidden></div>
+    <div class="lock-note" id="lockNote" hidden>Type your name at the top to start voting.</div>
+    <div class="view" id="days"></div>
+  </section>
 
+  <section class="view" id="view-flights" hidden>
+    <div class="section-head">
+      <h2>Flight info for everyone</h2>
+      <p>Who lands and leaves when, so we can plan pickups and drop-offs.</p>
+    </div>
+    <div class="card"><div class="table-wrap">
+      <table class="flights">
+        <thead><tr><th scope="col">Traveler</th><th scope="col">Arrival</th><th scope="col">Departure</th></tr></thead>
+        <tbody id="flightRows"></tbody>
+      </table>
+    </div></div>
+  </section>
+
+  <section class="view" id="view-airbnb" hidden>
+    <div class="section-head">
+      <h2>Hemma Tulum</h2>
+      <p>Our Airbnb for the trip: the listing, their Instagram, and experiences you can book through the host.</p>
+    </div>
+    <div class="links">
+      <a class="link-card" href="https://www.airbnb.com/rooms/34653929" target="_blank" rel="noopener">
+        <span class="link-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg></span>
+        <span class="link-txt"><strong>Airbnb listing</strong><span>Photos, amenities, house rules and check-in details</span></span>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="link-card" href="https://www.instagram.com/hemmatulum" target="_blank" rel="noopener">
+        <span class="link-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg></span>
+        <span class="link-txt"><strong>Instagram</strong><span>@hemmatulum</span></span>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="link-card" href="https://linktr.ee/GuestExperienceAtHemma" target="_blank" rel="noopener">
+        <span class="link-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.8z"/></svg></span>
+        <span class="link-txt"><strong>Experiences to book through the Airbnb</strong><span>Chef, tours and add-ons offered by the host</span></span>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </section>
+</main>
 
 <script>
 const SUN = '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3.2" fill="currentColor"/><g stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 1v1.6M8 13.4V15M1 8h1.6M13.4 8H15M3 3l1.1 1.1M11.9 11.9 13 13M3 13l1.1-1.1M11.9 4.1 13 3"/></g></svg>';
 const MOON = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10.8 1.6A6.5 6.5 0 1 0 14.4 11 5.4 5.4 0 0 1 10.8 1.6z" fill="currentColor"/></svg>';
 
-// Vote groups. multi: tick as many as you like.
+// ---- Flights (placeholders until everyone confirms) ----
+const D16="Wed, Dec 16", D17="Thu, Dec 17", D20="Sun, Dec 20", D24="Thu, Dec 24";
+const FLIGHTS = [
+  {name:"Kavya",             arr:{day:D16,time:"4:20 PM"}, dep:{day:D20,time:"5:20 PM"}},
+  {name:"Kunal / PJ / Kids", arr:{day:D16,time:"4:20 PM"}, dep:{day:D20,time:"5:20 PM"}},
+  {name:"Meghana",           arr:{day:D17,time:"1:37 PM"}, dep:{day:D24,time:"5:20 PM"}},
+  {name:"Param",             arr:{day:D16,time:"4:55 PM"}, dep:{day:D20,time:"6:35 PM"}},
+  {name:"Prateek",           arr:{day:D16,time:"4:20 PM"}, dep:{day:D24,time:"5:20 PM"}},
+  {name:"Prerna",            arr:{day:D16,time:"4:00 PM"}, dep:{day:D24,time:"4:34 PM"}},
+  {name:"Shashank",          arr:{day:D16,time:"4:20 PM"}, dep:{day:D24,time:"5:20 PM"}},
+  {name:"Sunaina",           arr:{day:D16,time:"4:20 PM"}, dep:{day:D24,time:"5:20 PM"}},
+  {name:"Suvidha",           arr:{day:D16,time:"4:20 PM"}, dep:{day:D24,time:"5:20 PM"}}
+];
+
+// ---- Votes ----
 const GROUPS = {
   breakfast: {multi:false, layout:"two", compact:true, opts:[
     {id:"all", name:"Yes, every morning", desc:"Thu, Fri, Sat and Sun."},
     {id:"some", name:"Only some mornings", desc:"We pick the days."},
     {id:"none", name:"No, skip it", desc:"We'll sort breakfast ourselves."}
   ]},
-  wed_pm: {multi:true, layout:"two", compact:true, opts:[
-    {id:"orderin", name:"Order in to the Airbnb"},
-    {id:"out", name:"Dinner at a restaurant"}
-  ]},
-  thu_am: {multi:true, opts:[
+  thu_am: {multi:true, otherField:"thu_other", opts:[
     {id:"buutsha", name:"Buuts'Ha Cenote Day Club", desc:"Day party built around a jungle cenote: DJs, drinks, swimming and a jump platform.", meta:["10–15 min drive","Party vibe","Day pass ~MXN 500–900"]},
     {id:"xcaret", name:"Xcaret Park", desc:"Eco-adventure park with underground rivers, wildlife and an evening show.", meta:["~1 hr drive north","Full day","~$180 pp (Xcaret Plus, incl. lunch)"]},
     {id:"yacht", name:"Rent a yacht with snorkelling", desc:"Private boat for the group, with snorkel stops along the coast.", meta:["Private for the group","~$1,200 total"]},
-    {id:"atv", name:"Cenotes + ATV + zipline", desc:"Adventure combo through the jungle with cenote swims between rides.", meta:["Tour pickup","Half to full day","~$100"]},
-    {id:"siankaan", name:"Sian Ka'an lagoons + Tulum ruins", desc:"Clifftop Maya ruins at opening, then a boat through the biosphere: dolphins, lagoons and a float down ancient Maya canals.", meta:["~30 min south","Full day","~$200"]}
+    {id:"other", name:"Other", desc:"Something else? Tick this and type your idea.", other:true}
   ]},
-  thu_pm: {multi:true, layout:"two", compact:true, opts:[
-    {id:"airbnb", name:"Dinner at the Airbnb"},
-    {id:"beach", name:"Dinner out in the beach zone"}
+  fri_pm: {multi:false, layout:"two", compact:true, opts:[
+    {id:"in", name:"I'm in"},
+    {id:"out", name:"Sitting this one out"}
   ]}
 };
 
 const DAYS = [
-  {dow:"Decide", num:"First", mon:"", title:"Breakfast at the Airbnb", sub:"Private chef, $30 per person. We need to confirm this early.",
+  {dow:"Decide", num:"First", mon:"", urgent:true, title:"Breakfast at the Airbnb", sub:"Private chef, $30 per person. We need to confirm this early.",
    any:{vote:{g:"breakfast", q:"Should we book it for all days?", hint:"Pick one."}}},
   {dow:"Wed", num:"16", title:"Arrival", sub:"Easy evening. Save energy.",
    am:{plan:["Travel day: flights and transfer to Tulum"]},
-   pm:{plan:["Reach the Airbnb around 7:30 PM","Light drinks"], vote:{g:"wed_pm", q:"Dinner tonight?"}}},
+   pm:{plan:["Reach the Airbnb around 7:30 PM","Light drinks","Dinner: order in to the Airbnb or head out to a restaurant"]}},
   {dow:"Thu", num:"17", title:"Day out", sub:"Pick every activity you'd be up for.",
    am:{vote:{g:"thu_am", q:"Daytime activity"}},
-   pm:{vote:{g:"thu_pm", q:"Dinner tonight?"}}},
+   pm:{plan:["Dinner: order in to the Airbnb or head out to a restaurant"]}},
   {dow:"Fri", num:"18", title:"Pool day and party", sub:"",
    am:{plan:["Yoga class at the Airbnb","Brunch","Pool time and pickleball"]},
-   pm:{feature:{h:"Party", p:"Option: Gitano. A table is about $1,500 and includes food and drinks."}}},
+   pm:{feature:{h:"Party", p:"Option: Gitano. A table is about $1,500 and includes food and drinks."}, vote:{g:"fri_pm", q:"Are you in for the party?", hint:"Pick one."}}},
   {dow:"Sat", num:"19", title:"Beach club and Airbnb party", sub:"",
-   am:{plan:["Beach club day"]},
+   am:{plan:["Beach club day: Taboo or Bagatelle"]},
    pm:{feature:{h:"Private Airbnb party", p:"Private bartender, Mexican dinner, drinks, and music. Can also head out later."}}},
   {dow:"Sun", num:"20", title:"Departure", sub:"Leave plenty of buffer for flights.",
    am:{plan:["Breakfast at the Airbnb","Checkout and head to the airport"]}}
 ];
 
-const S = {token:null, myId:null, votes:new Map(), names:{}, mine:blankMine(), canVote:false, loaded:false};
+const S = {token:null, myId:null, votes:new Map(), mine:blankMine(), canVote:false, loaded:false};
 const $ = id => document.getElementById(id);
-function blankMine(){ const m={nick:"",suggestions:[]}; for(const g in GROUPS) m[g]=GROUPS[g].multi?[]:null; return m; }
+function blankMine(){ const m={nick:"",thu_other:"",suggestions:[]}; for(const g in GROUPS) m[g]=GROUPS[g].multi?[]:null; return m; }
 function normalize(v){
   const m=blankMine(); if(!v) return m;
   m.nick = typeof v.nick==="string"?v.nick:"";
+  m.thu_other = typeof v.thu_other==="string"?v.thu_other.slice(0,120):"";
   for (const g in GROUPS){
     const val=v[g];
     if (GROUPS[g].multi) m[g]=Array.isArray(val)?val.filter(x=>typeof x==="string"):(typeof val==="string"?[val]:[]);
@@ -232,10 +320,12 @@ function normalize(v){
   m.suggestions = Array.isArray(v.suggestions) ? v.suggestions.filter(x=>x&&typeof x.text==="string").map(x=>({id:String(x.id||""),text:x.text.slice(0,200),at:typeof x.at==="string"?x.at:""})) : [];
   return m;
 }
-function setStatus(t, ok){ const el=$("status"); el.textContent=t; el.classList.toggle("ok",!!ok); }
+function setStatus(t, ok){ const e=$("status"); e.textContent=t; e.classList.toggle("ok",!!ok); }
 function banner(t){ const b=$("banner"); if(!t){b.hidden=true;b.textContent="";return;} b.textContent=t; b.hidden=false; }
-function voterLabel(id){ const v=S.votes.get(id); return (v&&v.nick) || S.names[id] || "Someone"; }
+function voterLabel(id){ const v=S.votes.get(id); return (v&&v.nick) || "Someone"; }
 function el(tag, cls, text){ const e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
+function hasName(){ return !!S.mine.nick; }
+function canAct(){ return S.canVote && hasName(); }
 
 function tally(g, optId){
   const ids=[];
@@ -248,10 +338,10 @@ function optCard(g, o){
   const ids=tally(g,o.id);
   const max=Math.max(1, ...G.opts.map(x=>tally(g,x.id).length));
   const selected = G.multi ? S.mine[g].includes(o.id) : S.mine[g]===o.id;
-  const lab=el("label","opt"+(G.multi?"":" radio")+(selected?" sel":""));
+  const lab=el("label","opt"+(G.multi?"":" radio")+(selected?" sel":"")+(canAct()?"":" locked"));
   const input=document.createElement("input");
   input.type=G.multi?"checkbox":"radio"; input.name=g; input.id=g+"-"+o.id; input.value=o.id;
-  input.checked=selected; input.disabled=!S.canVote;
+  input.checked=selected; input.disabled=!canAct();
   input.addEventListener("change",()=>choose(g,o.id));
   lab.appendChild(input);
   const top=el("div","opt-top");
@@ -260,12 +350,16 @@ function optCard(g, o){
   lab.appendChild(top);
   if (o.desc) lab.appendChild(el("p","opt-desc",o.desc));
   if (o.meta){ const m=el("div","meta"); o.meta.forEach(t=>m.appendChild(el("span",null,t))); lab.appendChild(m); }
-  if (!G.compact && o.desc){
+  if (!G.compact && o.desc && !o.other){
     const tr=el("div","track"); const f=el("div","fill"); f.style.width=(ids.length/max*100)+"%"; tr.appendChild(f); lab.appendChild(tr);
   }
   if (ids.length){
     const vs=el("div","voters");
-    ids.forEach(id=>vs.appendChild(el("span","chip"+(id===S.myId?" me":""), id===S.myId?"You":voterLabel(id))));
+    ids.forEach(id=>{
+      let t = id===S.myId ? "You" : voterLabel(id);
+      if (o.other && G.otherField){ const v=S.votes.get(id); const txt=v&&v[G.otherField]; if(txt) t += ": "+txt; }
+      vs.appendChild(el("span","chip"+(id===S.myId?" me":""), t));
+    });
     lab.appendChild(vs);
   }
   return lab;
@@ -287,6 +381,12 @@ function slot(kind, data){
     box.dataset.group=data.vote.g;
     box.setAttribute("role","group");
     s.appendChild(box);
+    if (G.otherField){
+      const w=el("div","other-in"); w.id="otherWrap-"+data.vote.g; w.hidden=true;
+      const inp=document.createElement("input"); inp.type="text"; inp.id=G.otherField; inp.maxLength=120; inp.placeholder="What would you like to do?"; inp.setAttribute("aria-label","Your other idea");
+      inp.addEventListener("input",()=>{ S.mine[G.otherField]=inp.value.trim().slice(0,120); if(S.myId) S.votes.set(S.myId,{...S.mine}); scheduleSave(900); });
+      w.appendChild(inp); s.appendChild(w);
+    }
   }
   return s;
 }
@@ -295,8 +395,8 @@ function buildDays(){
   const main=$("days");
   DAYS.forEach(d=>{
     const day=el("article","day");
-    const date=el("div","date"+(d.mon===""?" decide":"")); date.append(el("div","dow",d.dow), el("div","num",d.num), el("div","mon",d.mon===undefined?"Dec":d.mon));
-    const card=el("div","card"+(d.mon===""?" urgent":""));
+    const date=el("div","date"+(d.urgent?" decide":"")); date.append(el("div","dow",d.dow), el("div","num",d.num), el("div","mon",d.mon===undefined?"Dec":d.mon));
+    const card=el("div","card"+(d.urgent?" urgent":""));
     const head=el("header","card-head"); head.appendChild(el("h2",null,d.title)); if(d.sub) head.appendChild(el("p",null,d.sub)); card.appendChild(head);
     if (d.am) card.appendChild(slot("am",d.am));
     if (d.pm) card.appendChild(slot("pm",d.pm));
@@ -310,22 +410,35 @@ function buildSuggest(){
   const date=el("div","date decide"); date.append(el("div","dow","Your"), el("div","num","Ideas"), el("div","mon",""));
   const card=el("div","card");
   const head=el("header","card-head"); head.append(el("h2",null,"Got other ideas?"), el("p",null,"Restaurants, bars, parties, anything. Drop it here for the group."));
-  const slot=el("section","slot");
+  const sl=el("section","slot");
   const form=el("form","sugg-form"); form.id="suggForm";
   const inp=document.createElement("input"); inp.id="suggText"; inp.type="text"; inp.maxLength=200; inp.placeholder="Restaurants, bars, parties, anything…"; inp.setAttribute("aria-label","Your suggestion");
   const btn=el("button",null,"Add"); btn.type="submit"; btn.id="suggBtn";
   form.append(inp,btn);
   form.addEventListener("submit",e=>{
     e.preventDefault();
-    const t=inp.value.trim(); if(!t||!S.canVote) return;
+    const t=inp.value.trim(); if(!t||!canAct()) return;
     S.mine.suggestions=[...S.mine.suggestions,{id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),text:t.slice(0,200),at:new Date().toISOString()}];
     inp.value="";
     if (S.myId) S.votes.set(S.myId,{...S.mine});
     render(); scheduleSave(100);
   });
   const list=el("ul","sugg-list"); list.id="suggList";
-  slot.append(form,list);
-  card.append(head,slot); day.append(date,card); $("days").appendChild(day);
+  sl.append(form,list);
+  card.append(head,sl); day.append(date,card); $("days").appendChild(day);
+}
+
+function buildFlights(){
+  $("flightRows").replaceChildren(...FLIGHTS.map(f=>{
+    const tr=el("tr");
+    tr.appendChild(el("td",null,f.name));
+    [f.arr,f.dep].forEach(x=>{
+      const td=el("td","when"); td.appendChild(document.createTextNode(x.day));
+      const sm=el("small",null,x.time); if(f.placeholder) sm.appendChild(el("span","pill","TBC"));
+      td.appendChild(sm); tr.appendChild(td);
+    });
+    return tr;
+  }));
 }
 
 function renderSuggest(){
@@ -333,7 +446,7 @@ function renderSuggest(){
   S.votes.forEach((v,uid)=>(v.suggestions||[]).forEach(x=>all.push({...x,uid})));
   all.sort((a,b)=>(b.at||"").localeCompare(a.at||""));
   const list=$("suggList");
-  const kids=all.map(x=>{
+  list.replaceChildren(...all.map(x=>{
     const li=el("li","sugg");
     const t=el("span","txt",x.text); t.appendChild(el("span","by",x.uid===S.myId?"You":voterLabel(x.uid))); li.appendChild(t);
     if (x.uid===S.myId && S.canVote){
@@ -342,12 +455,11 @@ function renderSuggest(){
       li.appendChild(rm);
     }
     return li;
-  });
-  list.replaceChildren(...kids);
+  }));
   let empty=$("suggEmpty");
   if (!all.length){ if(!empty){ empty=el("p","sugg-empty","No suggestions yet. Be the first."); empty.id="suggEmpty"; list.after(empty);} }
   else if (empty) empty.remove();
-  ["suggText","suggBtn"].forEach(id=>$(id).disabled=!S.canVote);
+  ["suggText","suggBtn"].forEach(id=>$(id).disabled=!canAct());
 }
 
 function render(){
@@ -355,19 +467,24 @@ function render(){
   document.querySelectorAll(".opts[data-group]").forEach(box=>{
     const g=box.dataset.group; box.replaceChildren(...GROUPS[g].opts.map(o=>optCard(g,o)));
   });
-  const n=S.votes.size;
-  $("voterFact").textContent = !S.loaded ? "Loading votes…" : (n===0?"No votes yet":n+(n===1?" person has voted":" people have voted"));
+  for (const g in GROUPS){
+    const G=GROUPS[g]; if(!G.otherField) continue;
+    const w=$("otherWrap-"+g); if(!w) continue;
+    w.hidden = !(G.multi ? S.mine[g].includes("other") : S.mine[g]==="other");
+    $(G.otherField).disabled=!canAct();
+  }
+  $("lockNote").hidden = !S.canVote || hasName();
+  $("nick").classList.toggle("need", S.canVote && !hasName());
 }
 
 let writing=false, pending=false, timer=null;
-function scheduleSave(delay){ if(!S.canVote) return; clearTimeout(timer); setStatus("Saving…"); timer=setTimeout(flush,delay); }
+function scheduleSave(delay){ if(!canAct()) return; clearTimeout(timer); setStatus("Saving…"); timer=setTimeout(flush,delay); }
 async function flush(){
   timer=null;
   if (writing){ pending=true; return; }
   writing=true;
   try{
-    const r=await fetch("/api/votes",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({token:S.token,data:S.mine})});
-    if(!r.ok) throw new Error("save failed "+r.status);
+    await Store.save({...S.mine});
     setStatus("Saved",true); if($("banner").textContent.startsWith("Your vote didn't")) banner("");
   }catch(e){
     setStatus("");
@@ -378,27 +495,31 @@ async function flush(){
 }
 
 function choose(g, id){
+  if (!canAct()) return;
   const G=GROUPS[g];
   if (G.multi){ const set=new Set(S.mine[g]); set.has(id)?set.delete(id):set.add(id); S.mine[g]=[...set]; }
   else S.mine[g]=id;
   if (S.myId) S.votes.set(S.myId,{...S.mine});
-  render(); scheduleSave(300); nudgeName();
-}
-function nudgeName(){
-  if (S.mine.nick) return;
-  const n=$("nick"); n.classList.add("need"); n.placeholder="Add your name so the group knows it's you";
+  render(); scheduleSave(300);
+  if (id==="other" && G.otherField && S.mine[g].includes?.("other")) setTimeout(()=>$(G.otherField).focus(),0);
 }
 
 $("nick").addEventListener("input", e=>{
   S.mine.nick=e.target.value.trim().slice(0,30);
-  $("nick").classList.remove("need");
   if (S.myId){ S.votes.set(S.myId,{...S.mine}); render(); scheduleSave(900); }
 });
 
-buildDays(); buildSuggest(); render();
+// ---- Tabs ----
+const VIEWS=["itinerary","flights","airbnb"];
+function showView(){
+  const v = VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "itinerary";
+  VIEWS.forEach(n=>{ $("view-"+n).hidden = n!==v; });
+  document.querySelectorAll(".tab").forEach(t=>{ if(t.dataset.view===v) t.setAttribute("aria-current","page"); else t.removeAttribute("aria-current"); });
+  $("namerow").hidden = v!=="itinerary";
+}
+window.addEventListener("hashchange", showView);
 
-function readOnly(msg){ S.loaded=true; render(); banner(msg); }
-
+// ---- Storage: claude.ai artifact store, or the Vercel API ----
 function getToken(){
   let t=null;
   try{ t=localStorage.getItem("tulum_token"); }catch(e){}
@@ -413,20 +534,46 @@ async function sha(t){
   const buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));
   return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("").slice(0,24);
 }
+const Store = {
+  mode:null, db:null,
+  async init(){
+    if (window.claude && window.claude.use){
+      const [db,user]=await Promise.all([claude.use("db"), claude.use("user")]);
+      const id = db && user ? await user.id() : null;
+      if (id){ this.mode="claude"; this.db=db; return id; }
+      this.mode="none"; return null;
+    }
+    this.mode="api"; S.token=getToken(); return await sha(S.token);
+  },
+  async all(){
+    if (this.mode==="claude"){
+      const snap=await this.db.collection("votes").get(); const o={};
+      snap.docs.forEach(d=>{ const v=d.data(); if(v) o[d.id]=v; }); return o;
+    }
+    const r=await fetch("/api/votes",{cache:"no-store"}); if(!r.ok) throw new Error(r.status);
+    return (await r.json()).votes||{};
+  },
+  async save(data){
+    if (this.mode==="claude") return this.db.collection("votes").doc(S.myId).set({...data, updatedAt:new Date().toISOString()});
+    const r=await fetch("/api/votes",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({token:S.token,data})});
+    if(!r.ok) throw new Error("save failed "+r.status);
+  }
+};
 
 let first=true;
 async function load(){
   try{
-    const r=await fetch("/api/votes",{cache:"no-store"});
-    if(!r.ok) throw new Error(r.status);
-    const j=await r.json();
+    const all=await Store.all();
     const next=new Map();
-    Object.entries(j.votes||{}).forEach(([id,v])=>next.set(id,normalize(v)));
+    Object.entries(all).forEach(([id,v])=>next.set(id,normalize(v)));
     if ((writing||timer) && S.votes.has(S.myId)) next.set(S.myId,S.votes.get(S.myId));
     S.votes=next; S.loaded=true;
     if (first){
       first=false;
-      if (next.has(S.myId)){ S.mine=normalize(next.get(S.myId)); $("nick").value=S.mine.nick; }
+      if (next.has(S.myId)){
+        S.mine=normalize(next.get(S.myId)); $("nick").value=S.mine.nick;
+        for (const g in GROUPS){ const f=GROUPS[g].otherField; if(f && $(f)) $(f).value=S.mine[f]||""; }
+      }
     }
     if($("banner").textContent.startsWith("Votes can't")) banner("");
     render();
@@ -436,9 +583,11 @@ async function load(){
   }
 }
 
+buildDays(); buildSuggest(); buildFlights(); showView(); render();
+
 (async function init(){
-  S.token=getToken();
-  S.myId=await sha(S.token);
+  S.myId=await Store.init();
+  if (!S.myId){ banner("Sign in to vote. You can still read the plan below."); $("nick").disabled=true; render(); return; }
   S.canVote=true; render();
   await load();
   setInterval(()=>{ if(document.visibilityState==="visible") load(); },5000);

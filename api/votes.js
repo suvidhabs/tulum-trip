@@ -26,9 +26,9 @@ function clean(d) {
   const out = {
     nick: str(d.nick, 30).trim(),
     breakfast: typeof d.breakfast === "string" ? str(d.breakfast, 40) : null,
-    wed_pm: arr(d.wed_pm),
     thu_am: arr(d.thu_am),
-    thu_pm: arr(d.thu_pm),
+    thu_other: str(d.thu_other, 120).trim(),
+    fri_pm: typeof d.fri_pm === "string" ? str(d.fri_pm, 40) : null,
     suggestions: Array.isArray(d.suggestions)
       ? d.suggestions.slice(0, 30).filter((s) => s && typeof s.text === "string" && s.text.trim())
           .map((s) => ({ id: str(s.id, 40), text: s.text.trim().slice(0, 200), at: str(s.at, 40) }))
@@ -51,7 +51,7 @@ module.exports = async function handler(req, res) {
         try { votes[flat[i]] = JSON.parse(flat[i + 1]); } catch (e) {}
       }
       if (req.query && req.query.format === "csv") {
-        const cols = ["nick", "breakfast", "wed_pm", "thu_am", "thu_pm", "suggestions", "updatedAt"];
+        const cols = ["nick", "breakfast", "thu_am", "thu_other", "fri_pm", "suggestions", "updatedAt"];
         const esc = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
         const rows = Object.values(votes).map((v) =>
           cols.map((c) => esc(c === "suggestions" ? (v.suggestions || []).map((s) => s.text).join(" | ")
