@@ -288,7 +288,7 @@ const GROUPS = {
 
 const DAYS = [
   {dow:"Decide", num:"First", mon:"", urgent:true, title:"Breakfast at the Airbnb", sub:"Private chef, $30 per person. We need to confirm this early.",
-   any:{vote:{g:"breakfast", q:"Should we book it for all days?", hint:"Pick one."}}},
+   any:{vote:{g:"breakfast", q:"Should we book it for all days?", hint:"Pick one. Tap again to clear."}}},
   {dow:"Wed", num:"16", title:"Arrival", sub:"Easy evening. Save energy.",
    am:{plan:["Travel day: flights and transfer to Tulum"]},
    pm:{plan:["Reach the Airbnb around 7:30 PM","Light drinks","Dinner: order in to the Airbnb or head out to a restaurant"]}},
@@ -297,7 +297,7 @@ const DAYS = [
    pm:{plan:["Dinner: order in to the Airbnb or head out to a restaurant"]}},
   {dow:"Fri", num:"18", title:"Pool day and party", sub:"",
    am:{plan:["Yoga class at the Airbnb","Brunch","Pool time and pickleball"]},
-   pm:{feature:{h:"Party", p:"Option: Gitano. A table is about $1,500 and includes food and drinks."}, vote:{g:"fri_pm", q:"Are you in for the party?", hint:"Pick one."}}},
+   pm:{feature:{h:"Party", p:"Option: Gitano. A table is about $1,500 and includes food and drinks."}, vote:{g:"fri_pm", q:"Are you in for the party?", hint:"Pick one. Tap again to clear."}}},
   {dow:"Sat", num:"19", title:"Beach club and Airbnb party", sub:"",
    am:{plan:["Beach club day: Taboo or Bagatelle"]},
    pm:{feature:{h:"Private Airbnb party", p:"Private bartender, Mexican dinner, drinks, and music. Can also head out later."}}},
@@ -340,7 +340,7 @@ function optCard(g, o){
   const selected = G.multi ? S.mine[g].includes(o.id) : S.mine[g]===o.id;
   const lab=el("label","opt"+(G.multi?"":" radio")+(selected?" sel":"")+(canAct()?"":" locked"));
   const input=document.createElement("input");
-  input.type=G.multi?"checkbox":"radio"; input.name=g; input.id=g+"-"+o.id; input.value=o.id;
+  input.type="checkbox"; input.name=g; input.id=g+"-"+o.id; input.value=o.id;
   input.checked=selected; input.disabled=!canAct();
   input.addEventListener("change",()=>choose(g,o.id));
   lab.appendChild(input);
@@ -376,7 +376,7 @@ function slot(kind, data){
   if (data.vote){
     const G=GROUPS[data.vote.g];
     if (data.vote.q){ const q=el("p","q",data.vote.q); q.appendChild(el("span","vote-tag","Vote")); s.appendChild(q); }
-    s.appendChild(el("p","hint", data.vote.hint || "Tick as many as you like."));
+    s.appendChild(el("p","hint", data.vote.hint || "Tick as many as you like. Tap again to untick."));
     const box=el("div","opts"+(G.layout==="two"?" two":""));
     box.dataset.group=data.vote.g;
     box.setAttribute("role","group");
@@ -498,7 +498,7 @@ function choose(g, id){
   if (!canAct()) return;
   const G=GROUPS[g];
   if (G.multi){ const set=new Set(S.mine[g]); set.has(id)?set.delete(id):set.add(id); S.mine[g]=[...set]; }
-  else S.mine[g]=id;
+  else S.mine[g] = S.mine[g]===id ? null : id;
   if (S.myId) S.votes.set(S.myId,{...S.mine});
   render(); scheduleSave(300);
   if (id==="other" && G.otherField && S.mine[g].includes?.("other")) setTimeout(()=>$(G.otherField).focus(),0);
